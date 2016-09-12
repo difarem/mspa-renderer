@@ -28,24 +28,7 @@
 							<tr><td></td></tr>
 							<tr>
 								<td border="0" bgcolor="" height="0" valign="top"><center><font face="arial" size="1" color="ffffff"><b>
-								<a href="http://www.mspaintadventures.com/"><font color="ffffff">MS PAINT ADVENTURES</font></a>
-								&nbsp; <img src="http://cdn.mspaintadventures.com/images/candycorn.gif" border="0" align="absmiddle"> &nbsp;    <a href="?viewpage=archive"><font color="29ff4a">ARCHIVE</font></a>
-								|
-								<a href="?viewpage=new"><font color="29ff4a">NEW READER?</font></a>
-								&nbsp; <img src="http://cdn.mspaintadventures.com/images/candycorn.gif" border="0" align="absmiddle"> &nbsp;    <a href="?viewmap=menu"><font color="39d5f6">MAP</font></a>
-								|
-								<a href="?viewlog=menu"><font color="39d5f6">LOG</font></a>
-								|
-								<a href="?search=menu"><font color="39d5f6">SEARCH</font></a>
-								&nbsp; <img src="http://cdn.mspaintadventures.com/images/candycorn.gif" border="0" align="absmiddle"> &nbsp;    <a href="?viewpage=shop" class="menuanchorclass" rel="shop"><font color="f7f72a">SHOP</font></a>
-								|
-								<a href="http://homestuck.bandcamp.com/"><font color="f7f72a">MUSIC</font></a>
-								&nbsp; <img src="http://cdn.mspaintadventures.com/images/candycorn.gif" border="0" align="absmiddle"> &nbsp;    <a href="http://mspaforums.com"><font color="ffb529">FORUMS</font></a>
-								|
-								<a href="unlock.html"><font color="ffb529">SECRETS</font></a>
-								|
-								<a href="credits.html"><font color="ffb529">CREDITS</font></a>
-								</b></font></center></td>
+								&nbsp; <img src="http://cdn.mspaintadventures.com/images/candycorn.gif" border="0" align="absmiddle"> &nbsp;MS PAINT ADVENTURES&nbsp; <img src="http://cdn.mspaintadventures.com/images/candycorn.gif" border="0" align="absmiddle"> &nbsp;</font></center></td>
 							</tr>
 							<tr><td></td></tr>
 						</table>
@@ -92,8 +75,9 @@
 															<td bgcolor="#EEEEEE">
 																<center>
 																	{{range .Page.Assets}}
-																		{{.HTML}}
-																		<br><br>
+																		<p>
+																			{{.HTML}}
+																		</p>
 																	{{end}}
 																</center>
 															</td>
@@ -101,18 +85,13 @@
 
 														<tr>
 															<td bgcolor="#EEEEEE">
-																<img src="http://cdn.mspaintadventures.com/images/v2_blanksquare2.gif" border="0">
-															</td>
-														</tr>
-														<tr>
-															<td bgcolor="#EEEEEE">
 																<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
 																	<tr>
 																		<td>
 																			<center>
-																				<p style=" font-weight: bold; font-family: courier, monospace;color:#000000">
+																				<div style="font-weight:bold;font-family:courier,monospace;color:#000000;">
 																					{{.Page.Content}}
-																				</p>
+																				</div>
 																			</center>
 																		</td>
 																	</tr>
@@ -120,20 +99,21 @@
 															</td>
 														</tr>
 														<tr>
-															<td width="100%" bgcolor="#EEEEEE"><img src="http://cdn.mspaintadventures.com/images/v2_blanksquare3.gif" border="0"></td>
-														</tr>
-														<tr>
 															<td bgcolor="#EEEEEE">
 																<table width="600" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#EEEEEE">
 																	<tr>
 																		<td>
-																			{{range .Page.Next}}
-																				<font size="5">&gt; <a href="?s={{$.S}}&p={{.}}">Next arrow.</a></font><br>
+																			{{range $i, $p := .NextPages}}
+																				{{if .}}
+																					<font size="5">&gt; <a href="{{call $.Link $.S (index $.Page.Next $i)}}">{{.Title}}</a></font><br>
+																				{{end}}
 																			{{end}}
 																			<br><br>
-																			<!--<span style="font-size: 10px;">
-																				<b><a href="?s={{$.S}}">Start Over</a></b> | <b><a href="?s={{$.S}}&p=000181">Go Back</a></b></span>
-																			<br><br>-->
+																			{{if .PrevPageID}}
+																				<span style="font-size: 10px;">
+																					<b><a href="{{call .Link .S .PrevPageID}}">Go Back</a></b></span>
+																				<br><br>
+																			{{end}}
 																		</td>
 																	</tr>
 																</table>

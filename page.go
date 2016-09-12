@@ -69,7 +69,9 @@ func LoadPage(r io.Reader) *Page {
 				p.Assets = append(p.Assets, Image(line))
 			}
 		case 4:
-			content.WriteString(line + "<br/>")
+			if line != "" {
+				content.WriteString("<p>" + line + "</p>")
+			}
 		case 5:
 			if line == "X" {
 				break
