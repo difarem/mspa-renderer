@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"os"
 )
+
+var templates = template.Must(template.ParseFiles("view.tmpl"))
 
 func main() {
 	if len(os.Args) < 3 {

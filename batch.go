@@ -7,6 +7,9 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/difarem/mspa-renderer/mspa"
+	"github.com/difarem/mspa-renderer/mspa/render"
 )
 
 func runBatch(path string, outdir string) {
@@ -35,31 +38,31 @@ func runBatch(path string, outdir string) {
 			// prepare output directory
 			os.MkdirAll(filepath.Join(outdir, s), os.ModeDir|0775)
 
-			pages := iterateAdventure(s, filepath.Join(path, s))
+			panels := iterateAdventure(s, filepath.Join(path, s))
 
-			for p := range pages {
+			for p := range panels {
 				log.Printf("Rendering %s/%s...\n", s, p)
 
 				// render pages
-				var b Bindings
+				var b render.Bindings
 				b.S = s
 				b.P = p
 				b.Link = func(s, p string) string {
 					return fmt.Sprintf("../%s/%s.html", s, p)
 				}
-				b.Page = pages[p]
+				b.Panel = panels[p]
 
 				// loads the name of the next pages
-				for i := range b.Page.Next {
-					p := pages[b.Page.Next[i]]
-					b.NextPages = append(b.NextPages, p)
+				for i := range b.Panel.Next {
+					p := panels[b.Panel.Next[i]]
+					b.NextPanels = append(b.NextPanels, p)
 				}
 
 				// tries to load the previous page
 				if pn, err := strconv.Atoi(b.P); err == nil {
 					ppid := fmt.Sprintf("%06d", pn-1)
-					if _, ok := pages[ppid]; ok {
-						b.PrevPageID = ppid
+					if _, ok := panels[ppid]; ok {
+						b.PrevPanelID = ppid
 					}
 				}
 
@@ -69,7 +72,7 @@ func runBatch(path string, outdir string) {
 					continue
 				}
 				defer out.Close()
-				err = RenderPage(out, &b)
+				err = render.RenderPanel(templates.Lookup("view.tmpl"), out, &b)
 				if err != nil {
 					log.Print(err)
 				}
@@ -78,8 +81,8 @@ func runBatch(path string, outdir string) {
 	}
 }
 
-func iterateAdventure(s string, path string) map[string]*Page {
-	pages := make(map[string]*Page)
+func iterateAdventure(s string, path string) map[string]*mspa.Panel {
+	pages := make(map[string]*mspa.Panel)
 
 	dir, err := os.Open(path)
 	if err != nil {
@@ -103,7 +106,7 @@ func iterateAdventure(s string, path string) map[string]*Page {
 					continue
 				}
 				defer f.Close()
-				pages[p] = LoadPage(f)
+				pages[p] = mspa.LoadPanel(f)
 			}
 		}
 	}

@@ -60,7 +60,7 @@
 																		</td>
 																		<td>
 																			<center>
-																				<p style="font-weight: bold; font-family: courier, monospace; color:#000000"><font size="6">{{.Page.Title}}
+																				<p style="font-weight: bold; font-family: courier, monospace; color:#000000"><font size="6">{{.Panel.Title}}
 																				</font></p>
 																			</center>
 																		</td>
@@ -74,7 +74,7 @@
 														<tr>
 															<td bgcolor="#EEEEEE">
 																<center>
-																	{{range .Page.Assets}}
+																	{{range .Panel.Assets}}
 																		<p>
 																			{{.HTML}}
 																		</p>
@@ -90,7 +90,7 @@
 																		<td>
 																			<center>
 																				<div style="font-weight:bold;font-family:courier,monospace;color:#000000;">
-																					{{.Page.Content}}
+																					{{.Panel.Content}}
 																				</div>
 																			</center>
 																		</td>
@@ -103,15 +103,15 @@
 																<table width="600" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#EEEEEE">
 																	<tr>
 																		<td>
-																			{{range $i, $p := .NextPages}}
+																			{{range $i, $p := .NextPanels}}
 																				{{if .}}
-																					<font size="5">&gt; <a href="{{call $.Link $.S (index $.Page.Next $i)}}">{{.Title}}</a></font><br>
+																					<font size="5">&gt; <a href="{{call $.Link $.S (index $.Panel.Next $i)}}">{{.Title}}</a></font><br>
 																				{{end}}
 																			{{end}}
 																			<br><br>
-																			{{if .PrevPageID}}
+																			{{if .PrevPanelID}}
 																				<span style="font-size: 10px;">
-																					<b><a href="{{call .Link .S .PrevPageID}}">Go Back</a></b></span>
+																					<b><a href="{{call .Link .S .PrevPanelID}}">Go Back</a></b></span>
 																				<br><br>
 																			{{end}}
 																		</td>
